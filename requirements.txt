@@ -1,0 +1,12 @@
+# Requirements for ANES Silicon Sampling (research-grade simulation)
+# Recommended Python: 3.10–3.12
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+tqdm>=4.65
+matplotlib>=3.7
+# Jupyter for running the notebook
+jupyter>=1.0
+ipykernel>=6.25
+# Only needed if you regenerate notebooks programmatically
+nbformat>=5.9

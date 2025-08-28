@@ -8,7 +8,11 @@ SYSTEM_PERSONA = (
 PERSONA_PRIMER = ("Here is your demographic backstory. Think and respond as this person:{persona}")
 
 
-CHECK_PROMPT = ("You are a moderator checking a response for internal logic and demographic plausibility. Question: {q} Answer: {a} Persona: {persona} Return ONLY a compact JSON object with fields: {\"consistency\":0..1, \"plausibility\":0..1, \"issues\":[...], \"suggested_followup\":\"...\"}")
+CHECK_PROMPT = (
+	"You are a moderator checking a response for internal logic and demographic plausibility. "
+	"Question: {q} Answer: {a} Persona: {persona} Return ONLY a compact JSON object with fields: "
+	"{{\"consistency\":0..1, \"plausibility\":0..1, \"issues\":[...], \"suggested_followup\":\"...\"}}"
+)
 
 
 MINORITY_NUDGE = (

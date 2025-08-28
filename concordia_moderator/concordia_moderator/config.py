@@ -34,11 +34,11 @@ class AppConfig:
     model: ModelConfig
     embedding: EmbeddingConfig
 
-
-@staticmethod
-def load(path: str | Path) -> "AppConfig":
-    data = yaml.safe_load(Path(path).read_text())
-    mc = ModelConfig(**data.get("model", {}))
-    ec = EmbeddingConfig(**data.get("embedding", {}))
-    c = ModeratorConfig(**{k: v for k, v in data.items() if k in ModeratorConfig.__annotations__})
-    return AppConfig(cfg=c, model=mc, embedding=ec)
+    @classmethod
+    def load(cls, path: str | Path) -> "AppConfig":
+        """Load configuration from a YAML file path and return an AppConfig instance."""
+        data = yaml.safe_load(Path(path).read_text())
+        mc = ModelConfig(**data.get("model", {}))
+        ec = EmbeddingConfig(**data.get("embedding", {}))
+        c = ModeratorConfig(**{k: v for k, v in data.items() if k in ModeratorConfig.__annotations__})
+        return cls(cfg=c, model=mc, embedding=ec)
