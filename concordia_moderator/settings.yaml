@@ -6,7 +6,7 @@ minority_prompting: true
 minority_min_share: 0.15
 log_path: moderation_log.jsonl
 model:
-  name: openai-gpt4o
+  name: gpt-4o
   temperature: 0.7
 embedding:
   provider: openai
