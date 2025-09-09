@@ -10,15 +10,13 @@ class AnswerClusterer:
     def __init__(self, embedder: EmbeddingProvider):
         self.embedder = embedder
 
-
     def dominant_share(self, answers: List[str]) -> float:
         if len(answers) <= 1:
             return 1.0 if answers else 0.0
-        # For exactly two answers silhouette_score cannot be computed
-        # (it requires n_samples > 2). Handle that case cheaply without
-        # calling the embedder / clustering: if the strings are identical
-        # treat as unanimous (1.0), otherwise split evenly (0.5).
+
         n = len(answers)
+
+        # Special-case for exactly two answers (silhouette_score can’t handle n=2)
         if n == 2:
             return 1.0 if answers[0] == answers[1] else 0.5
 
@@ -27,12 +25,27 @@ class AnswerClusterer:
         best_k, best_score = 2, -1.0
         for k in range(2, min(6, n) + 1):
             labels = AgglomerativeClustering(n_clusters=k, linkage="average").fit_predict(X)
-            if len(set(labels)) == 1:
+
+            n_labels = len(set(labels))
+            # Guard against degenerate clustering
+            if n_labels <= 1 or n_labels >= n:
                 continue
+
             score = silhouette_score(X, labels)
             if score > best_score:
                 best_k, best_score = k, score
+
+        # Fallback: if no valid k was found
+        if best_score < 0:
+            return 1.0  # treat as unanimous
+
         labels = AgglomerativeClustering(n_clusters=best_k, linkage="average").fit_predict(X)
-            # compute majority cluster proportion
         counts = np.bincount(labels)
         return counts.max() / n
+
+
+
+
+
+
+
